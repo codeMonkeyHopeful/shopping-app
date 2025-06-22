@@ -2,6 +2,8 @@ services:
   planner:
     image: nginx:alpine
     container_name: planner
+    ports:
+      - "3500:80"
     expose:
       - "3500"
     volumes:
@@ -15,6 +17,7 @@ services:
       - "traefik.http.routers.planner.tls.certresolver=letsencrypt"
       - "traefik.http.routers.planner.middlewares=planner-auth"
       - "traefik.http.middlewares.planner-auth.basicauth.users=neo:$$apr1$$J8qzvc15$$oZVUAdtOkhL1Fjtr51Ni1."
+    restart: unless-stopped
     networks:
       - web
 
