@@ -4,19 +4,20 @@ services:
     container_name: planner
     ports:
       - "3500:80"
-    expose:
-      - "3500"
     volumes:
       - ./dist:/usr/share/nginx/html:ro
       # - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro # Optional
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.planner.rule=Host(`planner.ryan-jasinski.com`)"
-      - "traefik.http.services.planner.loadbalancer.server.port=3500"
-      - "traefik.http.routers.planner.entrypoints=websecure"
+      - "traefik.http.routers.planner.entrypoints=web,websecure"
+      - "traefik.http.routers.planner.tls=true"
       - "traefik.http.routers.planner.tls.certresolver=letsencrypt"
+
       - "traefik.http.routers.planner.middlewares=planner-auth"
       - "traefik.http.middlewares.planner-auth.basicauth.users=neo:$$apr1$$J8qzvc15$$oZVUAdtOkhL1Fjtr51Ni1."
+
+      - "traefik.http.services.planner.loadbalancer.server.port=3500"
     restart: unless-stopped
     networks:
       - web
