@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, Timestamp, getDocs, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, Timestamp, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
 
 // Replace this config with your own Firebase config
 const firebaseConfig = {
@@ -21,6 +21,15 @@ export const db = getFirestore(app);
 
 
 export const removeItemFirebase  = async (id) => {
+  return await deleteDoc(doc(db, 'items', id))
+    .then(() => {
+      return { status: `remove`, id };
+    })
+    .catch((error) => {
+      console.error(`Error removing item with id: ${id}, ${error}`);
+      return { status: `error`, id, error };
+    }
+  );
 }
 
 
@@ -28,12 +37,12 @@ export const addItemFirebase = async (item) => {
   // item comes in withupdated properties
   return await setDoc(doc(db, 'items', item.id), {
     ...item,
-    time: Timestamp.now(),
+    updated: Timestamp.now(),
   }).then(() => {
-    return { success: true, item };
+    return { status: `add`, item };
   }).catch((error) => {
     console.error(`Error adding item: ${item}, ${error}`);
-    return { success: false, item,  error };
+    return { status: `error`, item,  error };
   }
   )}
 
