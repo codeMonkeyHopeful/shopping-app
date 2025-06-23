@@ -30,10 +30,10 @@ export const addItemFirebase = async (item) => {
     ...item,
     time: Timestamp.now(),
   }).then(() => {
-    return item;
+    return { success: true, item };
   }).catch((error) => {
-    console.error("Error adding item: ", error);
-    throw error;
+    console.error(`Error adding item: ${item}, ${error}`);
+    return { success: false, item,  error };
   }
   )}
 
