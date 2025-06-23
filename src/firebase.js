@@ -63,10 +63,13 @@ export const getItemsFirebase = () => {
   // TODO: Order by name then return to list
   const items = getDocs(collection(db, "items"))
     .then((snapshot) => {
-      return snapshot.docs.map((doc) => ({
+      const formattedItems = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
+
+      formattedItems.sort((a, b) => a.name.localeCompare(b.name));
+      return formattedItems;
     })
     .catch((error) => {
       console.error(`Error getting items: ${error}`);
@@ -79,3 +82,6 @@ export const updateItemFirebase = async (id, item) => {
   const itemDoc = doc(db, "items", id);
   await updateDoc(itemDoc, item);
 };
+
+
+export const getItemsByCategoryFirebase = (key, val) => {};
