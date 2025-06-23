@@ -14,6 +14,8 @@ export const ShoppingList = () => {
           id: doc.id,
           ...doc.data(),
         }));
+
+        itemsData.sort((a, b) => a.name.localeCompare(b.name));
         setItems(itemsData);
       },
       (error) => {
