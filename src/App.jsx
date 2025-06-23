@@ -69,22 +69,7 @@ function App() {
     <div className="container my-5">
       <h2 className="text-center mb-4">🛒 Shopping List</h2>
 
-      <ul className="list-group mb-4">
-        {items.map((item) => (
-          <li
-            key={item.id}
-            className="list-group-item d-flex justify-content-between align-items-center"
-          >
-            <span>{item.name}</span>
-            <button
-              className="btn btn-sm btn-outline-danger"
-              onClick={() => removeItem(item.id)}
-            >
-              Remove
-            </button>
-          </li>
-        ))}
-      </ul>
+
 
       <form className="d-flex gap-2" onSubmit={addItem}>
         <input
