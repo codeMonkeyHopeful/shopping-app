@@ -3,14 +3,29 @@ import { useState } from "react";
 import { addItemFirebase } from "../firebase";
 
 export const InputForm = () => {
-  const [input, setInput] = useState("");
+  const [nameInput, setNameInput] = useState("");
+  const [quantityInput, setQuantityInput] = useState("");
+  const [noteInput, setNoteInput] = useState("");
 
   // TODO: Add more inpusts and capture them
 
+  const formatItems = () => {
+    const formatted = {
+      name: nameInput.trim(),
+      qty: quantityInput,
+      note: noteInput.trim(),
+    };
+
+    return formatted;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (input.trim().length === 0) return; // Prevent adding empty items
-    addItemFirebase(input.trim())
+    if (nameInput.trim() === "") return; // Prevent adding empty items
+
+    const inputItems = formatItems();
+
+    addItemFirebase(inputItems)
       .then((res) => {
         // Successfully added item
         return res;
@@ -19,6 +34,8 @@ export const InputForm = () => {
         // Handle error adding item
         console.error(`Error adding item: ${error}`);
       });
+
+    setNameInput(""); // Clear input field after submission
   };
 
   return (
@@ -27,8 +44,8 @@ export const InputForm = () => {
         type="text"
         className="form-control"
         placeholder="Add new item..."
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        value={nameInput}
+        onChange={(e) => setNameInput(e.target.value)}
       />
       <button className="btn btn-primary" type="submit">
         Add
