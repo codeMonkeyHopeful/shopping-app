@@ -1,6 +1,6 @@
 export { ShoppingList } from "./ShoppingList.jsx";
 export { ShoppingItem } from "./ShoppingItem.jsx";
-export { InputForm } from "./InputForm.jsx";
+export { ItemForm } from "./ItemForm.jsx";
 
 export {
   getItemsFirebase,

@@ -9,7 +9,7 @@ import {
   doc,
   onSnapshot,
 } from "firebase/firestore";
-import { ShoppingList, InputForm } from "./Components";
+import { ShoppingList, ItemForm } from "./Components";
 
 const listRef = collection(db, "list");
 
@@ -52,12 +52,6 @@ function App() {
     setInput("");
   };
 
-  // Remove item from Firestore
-  // const removeItem = async (id) => {
-  //   await deleteDoc(doc(db, "list", id));
-  //   setItems(items.filter((item) => item.id !== id));
-  // };
-
   // Trigger install
   const handleInstallClick = () => {
     if (deferredPrompt) {
@@ -72,7 +66,7 @@ function App() {
 
       <ShoppingList />
 
-      <InputForm />
+      <ItemForm />
 
       {deferredPrompt && (
         <div className="text-center mt-4">
