@@ -1,5 +1,14 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, Timestamp, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  Timestamp,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  collection,
+} from "firebase/firestore";
 
 // Replace this config with your own Firebase config
 const firebaseConfig = {
@@ -19,44 +28,48 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-
-export const removeItemFirebase  =  (id) => {
-  return  deleteDoc(doc(db, 'items', id))
+export const removeItemFirebase = (id) => {
+  return deleteDoc(doc(db, "items", id))
     .then(() => {
       return { status: `remove`, id };
     })
     .catch((error) => {
       console.error(`Error removing item with id: ${id}, ${error}`);
       return { status: `error`, id, error };
-    }
-  );
-}
+    });
+};
 
-
-export const addItemFirebase =  (item) => {
+export const addItemFirebase = (item) => {
   // item comes in withupdated properties
-  return  setDoc(doc(db, 'items', item.id), {
+  return setDoc(doc(db, "items", item.id), {
     ...item,
     updated: Timestamp.now(),
-  }).then(() => {
-    return { status: `add`, item };
-  }).catch((error) => {
-    console.error(`Error adding item: ${item}, ${error}`);
-    return { status: `error`, item,  error };
-  }
-  )}
+  })
+    .then(() => {
+      return { status: `add`, item };
+    })
+    .catch((error) => {
+      console.error(`Error adding item: ${item}, ${error}`);
+      return { status: `error`, item, error };
+    });
+};
 
-
-export const getItemsFirebase = async () => {
-  const snapshot = await getDocs(collection(db, 'items'));
-  return snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-}
+export const getItemsFirebase = () => {
+  const items = getDocs(collection(db, "items"))
+    .then((snapshot) => {
+      return snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+    })
+    .catch((error) => {
+      console.error(`Error getting items: ${error}`);
+      return [];
+    });
+  return items;
+};
 
 export const updateItemFirebase = async (id, item) => {
-  const itemRef = doc(db, 'items', id);
+  const itemRef = doc(db, "items", id);
   await updateDoc(itemRef, item);
-}
-
+};
