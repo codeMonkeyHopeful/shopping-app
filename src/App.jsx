@@ -9,6 +9,7 @@ import {
   doc,
   onSnapshot
 } from 'firebase/firestore';
+import { ShoppingList } from './Components';
 
 const listRef = collection(db, 'list');
 
@@ -69,7 +70,7 @@ function App() {
     <div className="container my-5">
       <h2 className="text-center mb-4">🛒 Shopping List</h2>
 
-
+        <ShoppingList />
 
       <form className="d-flex gap-2" onSubmit={addItem}>
         <input
