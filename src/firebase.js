@@ -18,3 +18,26 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+
+
+export const removeItemFirebase  = async (id) => {
+}
+
+
+export const addItemFirebase = async (item) => {
+}
+
+
+export const getItemsFirebase = async () => {
+  const snapshot = await getDocs(collection(db, 'items'));
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+}
+
+export const updateItemFirebase = async (id, item) => {
+  const itemRef = doc(db, 'items', id);
+  await updateDoc(itemRef, item);
+}
+
