@@ -20,8 +20,8 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
 
-export const removeItemFirebase  = async (id) => {
-  return await deleteDoc(doc(db, 'items', id))
+export const removeItemFirebase  =  (id) => {
+  return  deleteDoc(doc(db, 'items', id))
     .then(() => {
       return { status: `remove`, id };
     })
@@ -33,9 +33,9 @@ export const removeItemFirebase  = async (id) => {
 }
 
 
-export const addItemFirebase = async (item) => {
+export const addItemFirebase =  (item) => {
   // item comes in withupdated properties
-  return await setDoc(doc(db, 'items', item.id), {
+  return  setDoc(doc(db, 'items', item.id), {
     ...item,
     updated: Timestamp.now(),
   }).then(() => {
