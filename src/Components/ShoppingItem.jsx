@@ -24,7 +24,7 @@ export const ShoppingItem = ({ item, removeItem }) => {
       <span>{item.name}</span>
       <button
         className="btn btn-sm btn-outline-danger"
-        onClick={() => removeItem(item.id)}
+        onClick={() => handleRemove(item.id)}
       >
         Remove
       </button>
