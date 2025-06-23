@@ -3,11 +3,12 @@ import {
   getFirestore,
   doc,
   setDoc,
-  Timestamp,
+  serverTimestamp,
   getDocs,
   updateDoc,
   deleteDoc,
   collection,
+  addDoc,
   query,
   where,
   orderBy,
@@ -46,10 +47,9 @@ export const addItemFirebase = (item) => {
   // item comes in withupdated properties
   // TODO: Validate item properties before adding
   // TODO: If already exists combine, dont overwrite
-  return setDoc(doc(db, "items", item.id), {
-    ...item,
-    updated: Timestamp.now(),
-  })
+
+  // TODO Parse properly once inputs exist and add the server time to keep all timelines the same
+  return addDoc(collection(db, "items"), { ...item, upated: serverTimestamp() })
     .then(() => {
       return { status: `add`, item };
     })
@@ -60,7 +60,6 @@ export const addItemFirebase = (item) => {
 };
 
 export const getItemsFirebase = () => {
-  // TODO: Order by name then return to list
   const items = getDocs(collection(db, "items"))
     .then((snapshot) => {
       const formattedItems = snapshot.docs.map((doc) => ({
@@ -82,6 +81,5 @@ export const updateItemFirebase = async (id, item) => {
   const itemDoc = doc(db, "items", id);
   await updateDoc(itemDoc, item);
 };
-
 
 export const getItemsByCategoryFirebase = (key, val) => {};
