@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, setDoc, Timestamp, getDocs, updateDoc } from "firebase/firestore";
 
 // Replace this config with your own Firebase config
 const firebaseConfig = {
@@ -25,7 +25,17 @@ export const removeItemFirebase  = async (id) => {
 
 
 export const addItemFirebase = async (item) => {
-}
+  // item comes in withupdated properties
+  return await setDoc(doc(db, 'items', item.id), {
+    ...item,
+    time: Timestamp.now(),
+  }).then(() => {
+    return item;
+  }).catch((error) => {
+    console.error("Error adding item: ", error);
+    throw error;
+  }
+  )}
 
 
 export const getItemsFirebase = async () => {
