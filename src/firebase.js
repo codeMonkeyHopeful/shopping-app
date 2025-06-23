@@ -8,6 +8,9 @@ import {
   updateDoc,
   deleteDoc,
   collection,
+  query,
+  where,
+  orderBy,
 } from "firebase/firestore";
 
 // Replace this config with your own Firebase config
@@ -55,6 +58,7 @@ export const addItemFirebase = (item) => {
 };
 
 export const getItemsFirebase = () => {
+  // TODO: Order by name then return to list
   const items = getDocs(collection(db, "items"))
     .then((snapshot) => {
       return snapshot.docs.map((doc) => ({
@@ -70,6 +74,6 @@ export const getItemsFirebase = () => {
 };
 
 export const updateItemFirebase = async (id, item) => {
-  const itemRef = doc(db, "items", id);
-  await updateDoc(itemRef, item);
+  const itemDoc = doc(db, "items", id);
+  await updateDoc(itemDoc, item);
 };
