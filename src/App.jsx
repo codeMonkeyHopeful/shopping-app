@@ -7,6 +7,7 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  onSnapshot
 } from 'firebase/firestore';
 
 const listRef = collection(db, 'list');

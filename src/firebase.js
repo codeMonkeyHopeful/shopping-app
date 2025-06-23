@@ -44,6 +44,8 @@ export const removeItemFirebase = (id) => {
 
 export const addItemFirebase = (item) => {
   // item comes in withupdated properties
+  // TODO: Validate item properties before adding
+  // TODO: If already exists combine, dont overwrite
   return setDoc(doc(db, "items", item.id), {
     ...item,
     updated: Timestamp.now(),
