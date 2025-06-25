@@ -14,8 +14,9 @@ services:
       - "traefik.http.routers.planner.tls=true"
       - "traefik.http.routers.planner.tls.certresolver=letsencrypt"
 
+      # Basic Auth middleware
       - "traefik.http.routers.planner.middlewares=planner-auth"
-      - "traefik.http.middlewares.planner-auth.basicauth.users=neo:$$apr1$$J8qzvc15$$oZVUAdtOkhL1Fjtr51Ni1."
+      - "traefik.http.middlewares.planner-auth.basicauth.users=${SHOPPING_BASIC_AUTH_USERS}"
 
       - "traefik.http.services.planner.loadbalancer.server.port=80"
     restart: unless-stopped
