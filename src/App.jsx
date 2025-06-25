@@ -11,25 +11,10 @@ import {
 } from "firebase/firestore";
 import { ShoppingList, ItemForm } from "./Components";
 
-const listRef = collection(db, "list");
-
 function App() {
   const [items, setItems] = useState([]);
   const [input, setInput] = useState("");
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-
-  // Fetch items on mount
-  // useEffect(() => {
-  //   async function loadItems() {
-  //     const snapshot = await getDocs(listRef);
-  //     const data = snapshot.docs.map((doc) => ({
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     }));
-  //     setItems(data);
-  //   }
-  //   loadItems();
-  // }, []);
 
   // Handle PWA install prompt
   useEffect(() => {
@@ -40,17 +25,6 @@ function App() {
     window.addEventListener("beforeinstallprompt", handler);
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
-
-  // Add item to Firestore
-  const addItem = async (e) => {
-    e.preventDefault();
-    if (input.trim() === "") return;
-
-    const newItem = { name: input.trim() };
-    const docRef = await addDoc(listRef, newItem);
-    setItems([...items, { ...newItem, id: docRef.id }]);
-    setInput("");
-  };
 
   // Trigger install
   const handleInstallClick = () => {
