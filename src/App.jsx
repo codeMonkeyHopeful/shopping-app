@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { ShoppingList, ItemForm } from "./Components";
 
 function App() {
-  const [items, setItems] = useState([]);
-  const [input, setInput] = useState("");
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+  
 
   // Handle PWA install prompt
   useEffect(() => {
