@@ -13,7 +13,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 
-import { db } from "./firebase/index.js";
+import { db } from "./index.js";
 
 export const removeItemFirebase = (id) => {
   return deleteDoc(doc(db, "items", id))

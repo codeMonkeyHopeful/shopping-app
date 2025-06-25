@@ -8,6 +8,6 @@ export {
   addItemFirebase,
   updateItemFirebase,
   getItemsByCategoryFirebase,
-} from "../firebase.js";
+} from "../firebase/index.js";
 
 export { db } from "../firebase/index.js";

@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { addItemFirebase } from "../firebase";
+import { addItemFirebase } from "./index";
 
 export const ItemForm = () => {
   const [name, setName] = useState("");
