@@ -11,3 +11,5 @@ export {
 } from "../firebase/index.js";
 
 export { db } from "../firebase/index.js";
+
+export { api } from "../api/index.js";
