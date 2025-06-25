@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+// import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   doc,
@@ -13,6 +13,8 @@ import {
   where,
   orderBy,
 } from "firebase/firestore";
+
+import { db } from "./firebase/index.js";
 
 // import {
 //   getAuth,
