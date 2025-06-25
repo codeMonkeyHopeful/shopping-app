@@ -1,14 +1,5 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { db } from "./firebase/index.js";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  doc,
-  onSnapshot,
-} from "firebase/firestore";
 import { ShoppingList, ItemForm } from "./Components";
 
 function App() {
