@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { addItemFirebase } from "./index";
+import { addItem } from "./index";
 
 export const ItemForm = () => {
   const [name, setName] = useState("");
@@ -22,7 +22,7 @@ export const ItemForm = () => {
       notes: trimmedNotes,
     };
 
-    addItemFirebase(itemData)
+    addItem(itemData)
       .then((res) => {
         // TODO: Toast message the response
         console.log(res);

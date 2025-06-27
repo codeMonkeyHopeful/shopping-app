@@ -1,5 +1,5 @@
 // Calls your Flask backend
-import api from "./index"; // your axios instance
+import { api } from "./index"; // your axios instance
 
 export const addItem = (item) => api.post("/firebase/add", item);
 export const removeItem = (id) => api.post("/firebase/remove", { id });

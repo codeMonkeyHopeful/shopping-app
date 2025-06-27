@@ -28,25 +28,30 @@ export const removeItemFirebase = (id) => {
 
 const getSameItems = (currItem) => {
   const q = query(collection(db, "items"), where("name", "==", currItem.name));
-  db.collection("items")
-    .where("name", "==", currItem.name)
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        currItem.qty += doc.qty;
+
+  getDocs(q)
+    .then((docs) => {
+      // console.log(doc.id, " => ", doc.data());
+      if (docs) {
+        docs.forEach((doc) => {
+          // console.log(doc.id, " => ", doc.data());
+          currItem.qty += doc.data().qty;
+        });
       }
+      return currItem;
+    })
+    .catch((error) => {
+      console.error(
+        `Error getting items with name: ${currItem.name}, ${error}`
+      );
     });
-  if (q.ex) {
-    // TODO: FINISH THIS
-    return 1;
-  }
 };
 
 export const addItemFirebase = (item) => {
   // item comes in withupdated properties
   // TODO: Validate item properties before adding
   // TODO: If already exists combine, dont overwrite
-  const existingItems = getSameItems();
+  const existingItems = getSameItems(item);
 
   // TODO Parse properly once inputs exist and add the server time to keep all timelines the same
   return addDoc(collection(db, "items"), { ...item, upated: serverTimestamp() })

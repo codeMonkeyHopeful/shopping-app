@@ -1,30 +1,45 @@
 import { collection, onSnapshot } from "firebase/firestore";
 import React, { useEffect } from "react";
-import { ShoppingItem, db } from "./index";
+import { ShoppingItem } from "./index";
+import { getItems } from "./index";
 
 export const ShoppingList = () => {
   const [items, setItems] = React.useState([]);
 
+  // useEffect(() => {
+  // Init the app by grabbing all the items so we can display them
+  //   const unsubscribe = onSnapshot(
+  //     collection(db, "items"),
+  //     (snapshot) => {
+  //       const itemsData = snapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+
+  //       itemsData.sort((a, b) => a.name.localeCompare(b.name));
+  //       setItems(itemsData);
+  //     },
+  //     (error) => {
+  //       console.error("Error fetching items:", error);
+  //     }
+  //   );
+  //   // Cleanup function to unsubscribe from the snapshot listener
+  //   return () => unsubscribe();
+  // }, []);
+
   useEffect(() => {
     // Init the app by grabbing all the items so we can display them
-    const unsubscribe = onSnapshot(
-      collection(db, "items"),
-      (snapshot) => {
-        const itemsData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
+    getItems()
+      .then((itemsData) => {
         itemsData.sort((a, b) => a.name.localeCompare(b.name));
         setItems(itemsData);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.error("Error fetching items:", error);
-      }
-    );
-    // Cleanup function to unsubscribe from the snapshot listener
-    return () => unsubscribe();
+      });
   }, []);
+
+  
 
   return (
     <ul className="list-group mb-4">

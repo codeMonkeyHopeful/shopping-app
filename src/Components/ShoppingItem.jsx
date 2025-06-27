@@ -1,9 +1,9 @@
 import React from "react";
-import { removeItemFirebase } from "./index";
+import { removeItem } from "./index";
 
 export const ShoppingItem = ({ item, removeItem }) => {
   const handleRemove = (id) => {
-    removeItemFirebase(id)
+    removeItem(id)
       .then((res) => {
         // Successfully removed item
         // TODO: Display toast here
