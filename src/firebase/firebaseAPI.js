@@ -51,15 +51,11 @@ const getSameItems = async (currItem) => {
         `Error getting items with name: ${currItem.name}, ${error}`
       );
     });
-  // const updatedItem = await getDocs(q)
-  console.log(`Updated item: ${updatedItem}`);
+
   return updatedItem;
 };
 
 export const addItemFirebase = (item) => {
-  // item comes in withupdated properties
-  // TODO: Validate item properties before adding
-  // TODO: If already exists combine, dont overwrite
   return getSameItems(item).then((updatedItem) => {
     return addDoc(collection(db, "items"), {
       ...updatedItem,
