@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// Create the instance we will taylor to the app.
+// Create the instance we will tailor to the app.
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
 });
@@ -114,3 +114,28 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// NEW: call this on app startup to get tokens initially if missing
+export async function initializeAuth() {
+  const accessToken = getAccessToken();
+  const refreshToken = getRefreshToken();
+
+  if (accessToken && refreshToken) {
+    // Already have tokens, just start refresh timer
+    startAutoRefreshTimer();
+    return;
+  }
+
+  try {
+    const res = await api.post("/proxy/init", null, {
+      headers: {
+        "X-Shared-Secret": SHARED_SECRET,
+      },
+    });
+    setTokens(res.data);
+    startAutoRefreshTimer();
+  } catch (err) {
+    console.error("Initial proxy login failed:", err);
+    throw err; // or handle gracefully
+  }
+}

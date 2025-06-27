@@ -1,7 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { ShoppingList, ItemForm } from "./Components";
-import { getItems } from "./utils/index.js";
+import { getItems } from "./api/index";
+import { initializeAuth, api } from "./api";
 
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -10,6 +11,7 @@ function App() {
   const refreshItems = () => {
     return getItems()
       .then((itemsData) => {
+        console.log("Fetched items:", itemsData);
         itemsData.sort((a, b) => a.name.localeCompare(b.name));
         setItems(itemsData);
         return;
@@ -21,8 +23,18 @@ function App() {
   };
 
   useEffect(() => {
-    // Init the app by grabbing all the items so we can display them
-    refreshItems();
+    async function bootstrapApp() {
+      try {
+        await initializeAuth();
+        // Now tokens are set, you can start your API calls
+        await refreshItems(); // <-- wait for refreshItems AFTER auth
+      } catch (e) {
+        console.error("Failed to authenticate on startup", e);
+        // Show error UI or retry etc
+      }
+    }
+
+    bootstrapApp();
   }, []);
 
   // Handle PWA install prompt
