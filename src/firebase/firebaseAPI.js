@@ -28,7 +28,6 @@ export const removeItemFirebase = (id) => {
 
 const getSameItems = async (currItem) => {
   const q = query(collection(db, "items"), where("name", "==", currItem.name));
-  console.log(`Getting items with name: ${currItem}`);
   const updatedItem = getDocs(q)
     .then((docs) => {
       if (docs) {

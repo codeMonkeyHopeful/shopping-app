@@ -39,12 +39,15 @@ export const ShoppingList = () => {
       });
   }, []);
 
-  
-
   return (
     <ul className="list-group mb-4">
       {items.map((item) => (
-        <ShoppingItem key={item.id} item={item} />
+        <ShoppingItem
+          key={item.id}
+          item={item}
+          setItems={setItems}
+          items={items}
+        />
       ))}
       {/* Render a placeholder item if the list is empty */}
       {items.length === 0 && (
