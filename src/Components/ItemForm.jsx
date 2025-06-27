@@ -25,7 +25,6 @@ export const ItemForm = ({ refresh }) => {
     addItem(itemData)
       .then((res) => {
         // TODO: Toast message the response
-        console.log(res);
         // Reset form
         setName("");
         setQty(1);
