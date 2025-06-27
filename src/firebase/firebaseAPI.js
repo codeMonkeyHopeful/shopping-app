@@ -34,8 +34,14 @@ const getSameItems = async (currItem) => {
       // console.log(doc.id, " => ", doc.data());
       if (docs) {
         docs.forEach((doc) => {
-          // console.log(doc.id, " => ", doc.data());
           currItem.qty += doc.data().qty;
+          removeItemFirebase(doc.id)
+            .then((res) => {
+              console.log(`Removed item with id: ${doc.id}`);
+            })
+            .catch((error) => {
+              console.error(`Error removing item with id: ${doc.id}, ${error}`);
+            });
         });
       }
       return currItem;
