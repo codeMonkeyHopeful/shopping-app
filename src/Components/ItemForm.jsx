@@ -43,7 +43,10 @@ export const ItemForm = () => {
         className="form-control"
         placeholder="Item name"
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e) => {
+          console.log(e.target.value);
+          setName(e.target.value);
+        }}
         required
       />
       <input

@@ -26,10 +26,10 @@ export const removeItemFirebase = (id) => {
     });
 };
 
-const getSameItems = (currItem) => {
+const getSameItems = async (currItem) => {
   const q = query(collection(db, "items"), where("name", "==", currItem.name));
-
-  getDocs(q)
+  console.log(`Getting items with name: ${currItem}`);
+  const updatedItem = getDocs(q)
     .then((docs) => {
       // console.log(doc.id, " => ", doc.data());
       if (docs) {
@@ -45,23 +45,29 @@ const getSameItems = (currItem) => {
         `Error getting items with name: ${currItem.name}, ${error}`
       );
     });
+  // const updatedItem = await getDocs(q)
+  console.log(`Updated item: ${updatedItem}`);
+  return updatedItem;
 };
 
 export const addItemFirebase = (item) => {
   // item comes in withupdated properties
   // TODO: Validate item properties before adding
   // TODO: If already exists combine, dont overwrite
-  const existingItems = getSameItems(item);
-
-  // TODO Parse properly once inputs exist and add the server time to keep all timelines the same
-  return addDoc(collection(db, "items"), { ...item, upated: serverTimestamp() })
-    .then(() => {
-      return { status: `add`, item };
+  return getSameItems(item).then((updatedItem) => {
+    return addDoc(collection(db, "items"), {
+      ...updatedItem,
+      updated: serverTimestamp(),
     })
-    .catch((error) => {
-      console.error(`Error adding item: ${item}, ${error}`);
-      return { status: `error`, item, error };
-    });
+      .then((res) => {
+        console.log(res);
+        return { status: `add`, item: updatedItem };
+      })
+      .catch((error) => {
+        console.error(`Error adding item: ${item}, ${error}`);
+        return { status: `error`, item, error };
+      });
+  });
 };
 
 export const getItemsFirebase = () => {
