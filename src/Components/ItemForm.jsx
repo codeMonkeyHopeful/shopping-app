@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { addItem } from "./index";
 
-export const ItemForm = () => {
+export const ItemForm = ({ refresh }) => {
   const [name, setName] = useState("");
   const [qty, setQty] = useState(1);
   const [notes, setNotes] = useState("");
@@ -30,6 +30,8 @@ export const ItemForm = () => {
         setName("");
         setQty(1);
         setNotes("");
+        refresh();
+        return res;
       })
       .catch((error) => {
         console.error(`Error occured: ${error}`);

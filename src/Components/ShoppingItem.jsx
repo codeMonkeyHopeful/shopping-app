@@ -1,15 +1,14 @@
 import React from "react";
 import { removeItem } from "./index";
 
-export const ShoppingItem = ({ item, setItems, items }) => {
+export const ShoppingItem = ({ item, refresh }) => {
   const handleRemove = (id) => {
     removeItem(id)
       .then((res) => {
         // Successfully removed item
         // TODO: Display toast here
-        const updatedItems = items.filter((item) => item.id !== id);
-        updatedItems.sort((a, b) => a.name.localeCompare(b.name));
-        setItems(updatedItems);
+
+        refresh();
         return res;
       })
       .catch((error) => {

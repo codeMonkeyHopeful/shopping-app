@@ -1,11 +1,29 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { ShoppingList, ItemForm } from "./Components";
+import { getItems } from "./utils/index.js";
 
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [items, setItems] = React.useState([]);
 
-  
+  const refreshItems = () => {
+    return getItems()
+      .then((itemsData) => {
+        itemsData.sort((a, b) => a.name.localeCompare(b.name));
+        setItems(itemsData);
+        return;
+      })
+      .catch((error) => {
+        console.error("Error fetching items:", error);
+        return;
+      });
+  };
+
+  useEffect(() => {
+    // Init the app by grabbing all the items so we can display them
+    refreshItems();
+  }, []);
 
   // Handle PWA install prompt
   useEffect(() => {
@@ -29,9 +47,9 @@ function App() {
     <div className="container my-5">
       <h2 className="text-center mb-4">🛒 Shopping List</h2>
 
-      <ShoppingList />
+      <ShoppingList items={items} refresh={refreshItems} />
 
-      <ItemForm />
+      <ItemForm refresh={refreshItems} />
 
       {deferredPrompt && (
         <div className="text-center mt-4">
