@@ -31,7 +31,6 @@ const getSameItems = async (currItem) => {
   console.log(`Getting items with name: ${currItem}`);
   const updatedItem = getDocs(q)
     .then((docs) => {
-      // console.log(doc.id, " => ", doc.data());
       if (docs) {
         docs.forEach((doc) => {
           currItem.qty += doc.data().qty;
