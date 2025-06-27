@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { addItemFirebase } from "../firebase";
+import { addItem } from "./index";
 
-export const ItemForm = () => {
+export const ItemForm = ({ refresh }) => {
   const [name, setName] = useState("");
   const [qty, setQty] = useState(1);
   const [notes, setNotes] = useState("");
@@ -22,14 +22,15 @@ export const ItemForm = () => {
       notes: trimmedNotes,
     };
 
-    addItemFirebase(itemData)
+    addItem(itemData)
       .then((res) => {
         // TODO: Toast message the response
-        console.log(res);
         // Reset form
         setName("");
         setQty(1);
         setNotes("");
+        refresh();
+        return res;
       })
       .catch((error) => {
         console.error(`Error occured: ${error}`);

@@ -1,35 +1,41 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { db } from "./firebase";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  doc,
-  onSnapshot,
-} from "firebase/firestore";
 import { ShoppingList, ItemForm } from "./Components";
-
-const listRef = collection(db, "list");
+import { getItems } from "./api/index";
+import { initializeAuth, api } from "./api";
 
 function App() {
-  const [items, setItems] = useState([]);
-  const [input, setInput] = useState("");
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [items, setItems] = React.useState([]);
 
-  // Fetch items on mount
-  // useEffect(() => {
-  //   async function loadItems() {
-  //     const snapshot = await getDocs(listRef);
-  //     const data = snapshot.docs.map((doc) => ({
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     }));
-  //     setItems(data);
-  //   }
-  //   loadItems();
-  // }, []);
+  const refreshItems = () => {
+    return getItems()
+      .then((itemsData) => {
+        console.log("Fetched items:", itemsData);
+        itemsData.sort((a, b) => a.name.localeCompare(b.name));
+        setItems(itemsData);
+        return;
+      })
+      .catch((error) => {
+        console.error("Error fetching items:", error);
+        return;
+      });
+  };
+
+  useEffect(() => {
+    async function bootstrapApp() {
+      try {
+        await initializeAuth();
+        // Now tokens are set, you can start your API calls
+        await refreshItems(); // <-- wait for refreshItems AFTER auth
+      } catch (e) {
+        console.error("Failed to authenticate on startup", e);
+        // Show error UI or retry etc
+      }
+    }
+
+    bootstrapApp();
+  }, []);
 
   // Handle PWA install prompt
   useEffect(() => {
@@ -40,17 +46,6 @@ function App() {
     window.addEventListener("beforeinstallprompt", handler);
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
-
-  // Add item to Firestore
-  const addItem = async (e) => {
-    e.preventDefault();
-    if (input.trim() === "") return;
-
-    const newItem = { name: input.trim() };
-    const docRef = await addDoc(listRef, newItem);
-    setItems([...items, { ...newItem, id: docRef.id }]);
-    setInput("");
-  };
 
   // Trigger install
   const handleInstallClick = () => {
@@ -64,9 +59,9 @@ function App() {
     <div className="container my-5">
       <h2 className="text-center mb-4">🛒 Shopping List</h2>
 
-      <ShoppingList />
+      <ShoppingList items={items} refresh={refreshItems} />
 
-      <ItemForm />
+      <ItemForm refresh={refreshItems} />
 
       {deferredPrompt && (
         <div className="text-center mt-4">

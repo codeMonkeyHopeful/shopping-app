@@ -1,12 +1,14 @@
 import React from "react";
-import { removeItemFirebase } from "./index";
+import { removeItem } from "./index";
 
-export const ShoppingItem = ({ item, removeItem }) => {
+export const ShoppingItem = ({ item, refresh }) => {
   const handleRemove = (id) => {
-    removeItemFirebase(id)
+    removeItem(id)
       .then((res) => {
         // Successfully removed item
         // TODO: Display toast here
+
+        refresh();
         return res;
       })
       .catch((error) => {
@@ -21,7 +23,7 @@ export const ShoppingItem = ({ item, removeItem }) => {
       key={item.id}
       className="list-group-item d-flex justify-content-between align-items-center"
     >
-      <span>{item.name}</span>
+      <span>{item.name || "undefined"}</span>
       <button
         className="btn btn-sm btn-outline-danger"
         onClick={() => handleRemove(item.id)}
