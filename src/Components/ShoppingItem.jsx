@@ -17,17 +17,18 @@ export const ShoppingItem = ({ item, refresh, toast }) => {
       });
   };
   return (
-    <li
-      key={item.id}
-      className="list-group-item d-flex justify-content-between align-items-center"
-    >
-      <span>{item.name || "undefined"}</span>
-      <button
-        className="btn btn-sm btn-outline-danger"
-        onClick={() => handleRemove(item.id)}
-      >
-        Remove
-      </button>
-    </li>
+    <tr>
+      <td className="text-center">{item.name}</td>
+      <td className="text-center">{item.qty}</td>
+      <td className="text-center">{item.notes}</td>
+      <td className="text-center">
+        <button
+          className="btn btn-sm btn-outline-danger"
+          onClick={() => handleRemove(item.id)}
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
   );
 };
