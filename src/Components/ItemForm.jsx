@@ -45,6 +45,7 @@ export const ItemForm = ({ refresh, toast }) => {
         placeholder="Item name"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        id="itemName"
         required
       />
       <input
@@ -54,6 +55,7 @@ export const ItemForm = ({ refresh, toast }) => {
         value={qty}
         onChange={(e) => setQty(e.target.value)}
         min="1"
+        id="itemQty"
         required
       />
       <input
@@ -62,6 +64,7 @@ export const ItemForm = ({ refresh, toast }) => {
         placeholder="Notes (optional)"
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
+        id="itemNotes"
       />
       <button type="submit" className="btn btn-primary">
         Add
