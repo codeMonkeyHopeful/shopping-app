@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { ShoppingList, ItemForm } from "./Components";
+import { ShoppingList, ItemForm, Toast } from "./Components";
 import { getItems } from "./api/index";
 import { initializeAuth, api } from "./api";
 
@@ -59,9 +59,9 @@ function App() {
     <div className="container my-5">
       <h2 className="text-center mb-4">🛒 Shopping List</h2>
 
-      <ShoppingList items={items} refresh={refreshItems} />
+      <ShoppingList items={items} refresh={refreshItems} toast={Toast} />
 
-      <ItemForm refresh={refreshItems} />
+      <ItemForm refresh={refreshItems} toast={Toast} />
 
       {deferredPrompt && (
         <div className="text-center mt-4">
