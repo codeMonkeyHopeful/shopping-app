@@ -1,4 +1,3 @@
-import React from "react";
 import { removeItem } from "./index";
 
 export const ShoppingItem = ({ item, refresh, toast }) => {

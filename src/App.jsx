@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import { ShoppingList, ItemForm, Toast } from "./Components";
 import { getItems } from "./api/index";
@@ -6,7 +5,7 @@ import { initializeAuth, api } from "./api";
 
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [items, setItems] = React.useState([]);
+  const [items, setItems] = useState([]);
 
   const refreshItems = () => {
     return getItems()

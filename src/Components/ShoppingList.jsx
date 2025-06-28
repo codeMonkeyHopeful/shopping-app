@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
 import { ShoppingItem } from "./index";
-import { getItems } from "./index";
 
 export const ShoppingList = ({ items, refresh, toast }) => {
   return (
