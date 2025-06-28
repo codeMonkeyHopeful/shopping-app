@@ -2,14 +2,14 @@ import { ShoppingItem } from "./index";
 
 export const ShoppingList = ({ items, refresh, toast }) => {
   return (
-    <div class="container mt-5">
-      <table class="table table-bordered table-striped w-100">
-        <thead class="table-dark">
+    <div className="container mt-5">
+      <table className="table table-bordered table-striped w-100">
+        <thead className="table-dark">
           <tr>
-            <th class="text-center">Name</th>
-            <th class="text-center">Qty</th>
-            <th class="text-center">Note</th>
-            <th class="text-center">Actions</th>
+            <th className="text-center">Name</th>
+            <th className="text-center">Qty</th>
+            <th className="text-center">Note</th>
+            <th className="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
