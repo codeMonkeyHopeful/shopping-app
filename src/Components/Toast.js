@@ -1,4 +1,12 @@
 export function Toast(message, duration = 2000) {
+  const toastMessages = {
+    add: "Item added successfully!",
+    remove: "Item removed successfully!",
+    update: "Item updated successfully!",
+    get: "Items fetched successfully!",
+    error: "An error occurred. Please try again.",
+  };
+
   const containerId = "toast-container";
 
   let container = document.getElementById(containerId);
@@ -16,7 +24,7 @@ export function Toast(message, duration = 2000) {
   }
 
   const toast = document.createElement("div");
-  toast.textContent = message;
+  toast.textContent = toastMessages[message];
   toast.style.background = "#333";
   toast.style.color = "#fff";
   toast.style.padding = "0.75rem 1.25rem";
