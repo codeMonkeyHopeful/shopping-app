@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { addItem } from "./index";
 
-export const ItemForm = ({ refresh }) => {
+export const ItemForm = ({ refresh, toast }) => {
   const [name, setName] = useState("");
   const [qty, setQty] = useState(1);
   const [notes, setNotes] = useState("");
@@ -24,7 +24,7 @@ export const ItemForm = ({ refresh }) => {
 
     addItem(itemData)
       .then((res) => {
-        // TODO: Toast message the response
+        toast("add");
         // Reset form
         setName("");
         setQty(1);
@@ -34,6 +34,7 @@ export const ItemForm = ({ refresh }) => {
       })
       .catch((error) => {
         console.error(`Error occured: ${error}`);
+        toast("error");
       });
   };
 

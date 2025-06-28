@@ -1,20 +1,19 @@
 import React from "react";
 import { removeItem } from "./index";
 
-export const ShoppingItem = ({ item, refresh }) => {
+export const ShoppingItem = ({ item, refresh, toast }) => {
   const handleRemove = (id) => {
     removeItem(id)
       .then((res) => {
         // Successfully removed item
-        // TODO: Display toast here
-
+        toast("remove");
         refresh();
         return res;
       })
       .catch((error) => {
         // Handle error removing item
         console.error(`Error removing item: ${error}`);
-        // TODO: Display toast here
+        toast("error");
         return error;
       });
   };
