@@ -7,5 +7,4 @@ export const removeItem = (id) =>
     res.data;
   });
 export const getItems = () => api.post("/firebase/get").then((res) => res.data);
-export const updateItem = (id, item) =>
-  api.post("/firebase/update", { id, ...item });
+export const updateItem = (item) => api.post("/firebase/update", item);
