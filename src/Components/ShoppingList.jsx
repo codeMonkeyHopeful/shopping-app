@@ -1,15 +1,17 @@
 import { ShoppingItem } from "./index";
 
 export const ShoppingList = ({ items, refresh, toast }) => {
+  const tableHeaders = ["Name", "Qty", , "Store", "Note", "Actions"];
   return (
     <div className="container mt-5">
       <table className="table table-bordered table-striped w-100">
         <thead className="table-dark">
           <tr>
-            <th className="text-center">Name</th>
-            <th className="text-center">Qty</th>
-            <th className="text-center">Note</th>
-            <th className="text-center">Actions</th>
+            {tableHeaders.map((header) => (
+              <th key={header} className="text-center">
+                {header}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>

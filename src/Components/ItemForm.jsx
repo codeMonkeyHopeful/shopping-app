@@ -4,6 +4,7 @@ import { addItem } from "./index";
 export const ItemForm = ({ refresh, toast }) => {
   const [name, setName] = useState("");
   const [qty, setQty] = useState(1);
+  const [store, setStore] = useState("");
   const [notes, setNotes] = useState("");
 
   const handleSubmit = (e) => {
@@ -12,12 +13,14 @@ export const ItemForm = ({ refresh, toast }) => {
     const trimmedName = name.trim();
     const trimmedNotes = notes.trim();
     const quantity = parseInt(qty, 10);
+    const trimmedStore = store.trim();
 
     if (!trimmedName || quantity < 1) return;
 
     const itemData = {
       name: trimmedName,
       qty: quantity,
+      store: trimmedStore,
       notes: trimmedNotes,
     };
 
@@ -27,6 +30,7 @@ export const ItemForm = ({ refresh, toast }) => {
         // Reset form
         setName("");
         setQty(1);
+        setStore("");
         setNotes("");
         refresh();
         return res;
@@ -57,6 +61,14 @@ export const ItemForm = ({ refresh, toast }) => {
         min="1"
         id="itemQty"
         required
+      />
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Store (optional)"
+        value={store}
+        onChange={(e) => setStore(e.target.value)}
+        id="itemStore"
       />
       <input
         type="text"
