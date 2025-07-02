@@ -9,7 +9,7 @@ services:
       # - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro # Optional
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.planner.rule=Host(`planner.ryan-jasinski.com`)"
+      - "traefik.http.routers.planner.rule=Host(`${APP_DOMAIN}`)"
       - "traefik.http.routers.planner.entrypoints=web,websecure"
       - "traefik.http.routers.planner.tls=true"
       - "traefik.http.routers.planner.tls.certresolver=letsencrypt"
