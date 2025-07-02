@@ -59,10 +59,13 @@ export const ShoppingItem = ({ item, refresh, toast }) => {
       });
   };
 
+  const rowValues = ["name", "qty", "store", "notes"];
+
   return status === "view" ? (
     <tr>
       <td className="text-center">{item.name}</td>
       <td className="text-center">{item.qty}</td>
+      <td className="text-center">{item.store}</td>
       <td className="text-center">{item.notes}</td>
       <td className="text-center d-flex justify-content-around w-100">
         <button
