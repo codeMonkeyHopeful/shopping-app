@@ -32,6 +32,7 @@ export const ItemForm = ({ refresh, toast }) => {
         setQty(1);
         setStore("");
         setNotes("");
+        document.getElementById("itemName").focus();
         refresh();
         return res;
       })
