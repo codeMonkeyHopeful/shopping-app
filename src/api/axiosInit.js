@@ -9,18 +9,28 @@ export const api = axios.create({
 const SHARED_SECRET = import.meta.env.VITE_SHARED_SECRET_HEADER;
 let refreshTimeoutId = null;
 
+// In-memory token cache to prevent stale reads from localStorage
+let currentAccessToken = null;
+let currentRefreshToken = null;
+
 // Helpers to manage tokens
 function setTokens({ access_token, refresh_token }) {
-  if (access_token) localStorage.setItem("access_token", access_token);
-  if (refresh_token) localStorage.setItem("refresh_token", refresh_token);
+  if (access_token) {
+    localStorage.setItem("access_token", access_token);
+    currentAccessToken = access_token;
+  }
+  if (refresh_token) {
+    localStorage.setItem("refresh_token", refresh_token);
+    currentRefreshToken = refresh_token;
+  }
 }
 
 function getAccessToken() {
-  return localStorage.getItem("access_token");
+  return currentAccessToken || localStorage.getItem("access_token");
 }
 
 function getRefreshToken() {
-  return localStorage.getItem("refresh_token");
+  return currentRefreshToken || localStorage.getItem("refresh_token");
 }
 
 function startAutoRefreshTimer() {
@@ -70,9 +80,12 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // Don't retry these endpoints or loop infinitely
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
+      !originalRequest.url.includes("/auth/refresh") &&
+      !originalRequest.url.includes("/proxy/init") &&
       getRefreshToken()
     ) {
       originalRequest._retry = true;
@@ -89,25 +102,29 @@ api.interceptors.response.use(
         startAutoRefreshTimer();
 
         originalRequest.headers.Authorization = `Bearer ${res.data.access_token}`;
-        return api(originalRequest); // 🔁 Retry original request
+        return api(originalRequest);
       } catch (refreshErr) {
         console.warn("Refresh failed, trying proxy fallback...");
 
-        try {
-          const fallback = await api.post("/proxy/init", null, {
-            headers: {
-              "X-Shared-Secret": SHARED_SECRET,
-            },
-          });
+        if (!originalRequest._proxyRetry) {
+          originalRequest._proxyRetry = true;
 
-          setTokens(fallback.data);
-          refreshTimeoutId = null;
-          startAutoRefreshTimer();
+          try {
+            const fallback = await api.post("/proxy/init", null, {
+              headers: {
+                "X-Shared-Secret": SHARED_SECRET,
+              },
+            });
 
-          originalRequest.headers.Authorization = `Bearer ${fallback.data.access_token}`;
-          return api(originalRequest); // 🔁 Retry again after proxy login
-        } catch (proxyErr) {
-          console.error("Proxy fallback failed:", proxyErr);
+            setTokens(fallback.data);
+            refreshTimeoutId = null;
+            startAutoRefreshTimer();
+
+            originalRequest.headers.Authorization = `Bearer ${fallback.data.access_token}`;
+            return api(originalRequest);
+          } catch (proxyErr) {
+            console.error("Proxy fallback failed:", proxyErr);
+          }
         }
       }
     }
@@ -116,13 +133,15 @@ api.interceptors.response.use(
   }
 );
 
-// NEW: call this on app startup to get tokens initially if missing
+// Call this on app startup to get tokens initially if missing
 export async function initializeAuth() {
-  const accessToken = getAccessToken();
-  const refreshToken = getRefreshToken();
+  const accessToken = localStorage.getItem("access_token");
+  const refreshToken = localStorage.getItem("refresh_token");
+
+  currentAccessToken = accessToken;
+  currentRefreshToken = refreshToken;
 
   if (accessToken && refreshToken) {
-    // Already have tokens, just start refresh timer
     startAutoRefreshTimer();
     return;
   }
@@ -137,6 +156,6 @@ export async function initializeAuth() {
     startAutoRefreshTimer();
   } catch (err) {
     console.error("Initial proxy login failed:", err);
-    throw err; // or handle gracefully
+    throw err;
   }
 }
