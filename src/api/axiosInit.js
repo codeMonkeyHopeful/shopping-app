@@ -3,6 +3,7 @@ import axios from "axios";
 // Create the instance we will tailor to the app.
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true,
 });
 
 const SHARED_SECRET = import.meta.env.VITE_SHARED_SECRET_HEADER;
