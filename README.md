@@ -18,14 +18,14 @@ A simple, single-page shopping list application built with **Vite**, **Firebase*
 ## 📁 Project Structure
 
 ```
-├── firebaseClient.js           # Firebase setup (dev only)
-├── firebaseLogin.js            # Firebase dev login logic
-├── api/                        # Flask backend blueprints (optional)
+├── firebaseClient.js           # Firebase setup (dev only in Prod use seperate Flask)
+├── firebaseLogin.js            # Firebase login logic
+├── api/                        # Flask backend (blueprints if you want) 
 ├── public/
 ├── src/
 │   └── main.js / App.js        # App entry and logic
-├── .env                        # Local dev env vars (ignored in prod)
-├── .env.production             # For production (should be blank or safe)
+├── .env                       
+├── .env.production            
 └── README.md
 ```
 
