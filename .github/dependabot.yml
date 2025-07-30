@@ -5,7 +5,14 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # Keep npm dependencies up to date
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+    # We group our PRs into two types, one for prodcution and one for dev, each will group all items for that type
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
